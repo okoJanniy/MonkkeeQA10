@@ -22,7 +22,7 @@ Team:
 ------------------
 
   ##### Klenitskiy Anton  
-  ##### mentor
+  ##### mentor Dmitriy Rak
        
 Scope:
 ------------------

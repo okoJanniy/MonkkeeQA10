@@ -8,11 +8,12 @@ import java.util.List;
 
 import static com.codeborne.selenide.Condition.exactValue;
 import static com.codeborne.selenide.Selectors.byCssSelector;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 import static org.openqa.selenium.By.id;
 
 @Log4j2
-public class MainPage{
+public class MainPage {
 
     private static final String URL = "https://my.monkkee.com/#/entries";
     private static final By SEARCH_INPUT = id("appendedInputButton");
@@ -23,7 +24,6 @@ public class MainPage{
 
     public void openPage() {
         log.info("Opening Main page");
-        sleep(1000);
         isPageOpened();
     }
 
@@ -35,13 +35,11 @@ public class MainPage{
     public void clickNewEntry() {
         log.info("Opening the 'Create a new Entry'");
         $(CREATE_ENTRY_BUTTON).click();
-        sleep(1000);
     }
 
     public MainPage checkEntryByHeader(String header) {
         log.info("Create list of headers from Entries");
         List<String> listOfEntries = $$(byCssSelector(ENTRY_HEADER_TEXT)).texts();
-        sleep(1000);
         log.info("Looking for a match of the entry header with the header:" + header);
         listOfEntries.contains(exactValue(header));
         return this;
@@ -50,8 +48,7 @@ public class MainPage{
     public MainPage checkEntryByBodyText(String text) {
         log.info("Create list of body texts from Entries");
         List<String> listOfEntries = $$(byCssSelector(ENTRY_BODY_TEXT)).texts();
-        sleep(1000);
-        log.info("Looking for a match of the entry body with the body text:" + text);
+        log.info("Looking for a match of the entry body with the body text: " + text);
         listOfEntries.contains(exactValue(text));
         return this;
     }

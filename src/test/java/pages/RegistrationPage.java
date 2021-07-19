@@ -4,7 +4,8 @@ import com.codeborne.selenide.Condition;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 import static org.openqa.selenium.By.id;
 
 @Log4j2
@@ -22,7 +23,6 @@ public class RegistrationPage {
     public void openPage() {
         log.info("Opening Registration page");
         open(URL);
-        sleep(1000);
         isPageOpened();
     }
 
@@ -32,11 +32,11 @@ public class RegistrationPage {
     }
 
     public RegistrationPage proceedRegistration(String email, String password) {
-        log.info("Fill email field:" + email);
+        log.info("Fill email field: " + email);
         $(REGISTRATION_EMAIL).sendKeys(email);
-        log.info("Fill password field:" + password);
+        log.info("Fill password field: " + password);
         $(REGISTRATION_PASSWORD).sendKeys(password);
-        log.info("Fill confirmation password field:" + password);
+        log.info("Fill confirmation password field: " + password);
         $(CONFIRM_PASSWORD).sendKeys(password);
         log.info("Click terms of use checkbox");
         $(TERMS_OF_USE_CHECKBOX).click();
@@ -46,7 +46,7 @@ public class RegistrationPage {
         return this;
     }
 
-    public RegistrationPage confirmRegistration (){
+    public RegistrationPage confirmRegistration() {
         log.info("Confirm registration message");
         $(REGISTRATION_MESSAGE).shouldBe(Condition.text("User registered"));
         return this;

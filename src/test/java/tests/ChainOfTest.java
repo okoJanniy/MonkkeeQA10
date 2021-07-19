@@ -5,39 +5,39 @@ import org.testng.annotations.Test;
 
 public class ChainOfTest extends BaseTest {
 
-    @Test(priority = 1, description = "Регистрация нового пользователя на сайте")
+    @Test(description = "Регистрация нового пользователя на сайте")
     @Link("https://my.monkkee.com/#/")
-    public void registrationANewUser (){
-        registrationStep
+    public void registrationANewUser() {
+        registrationSteps
                 .openRegistrationPage()
                 .fillFormForRegistrationANewUser(email, password)
                 .confirmMessageOfRegistration();
     }
 
-    @Test(priority = 2, description = "Подтверждение регистрации по email")
-    public void confirmMessageOnEmail (){
-        mailinatorStep
+    @Test(description = "Подтверждение регистрации по email")
+    public void confirmMessageOnEmail() {
+        mailinatorSteps
                 .openMailinatorPage()
                 .goToEmailBox(email)
                 .confirmRegistration();
     }
 
-    @Test(priority = 3, description = "Авторизация пользователя на сайте")
-    public void loginUser (){
-        loginStep
+    @Test(description = "Авторизация пользователя на сайте")
+    public void loginUser() {
+        loginSteps
                 .openLoginPage()
                 .fillFormForLogin(email, password)
                 .confirmAuthorization();
     }
 
-    @Test(priority = 4, description = "Добавление записи")
+    @Test(description = "Добавление записи")
     public void checkAddingEntry() {
-        loginStep
+        loginSteps
                 .openLoginPage()
                 .fillFormForLogin(email, password);
-        mainStep.clickCreateNewEntry();
-        entryStep.writeTextAndHeaderInToEntry(header, text)
+        mainSteps.clickCreateNewEntry();
+        entrySteps.writeTextAndHeaderInToEntry(header, text)
                 .goToMainPage();
-        mainStep.checkEntryByData(header, text);
+        mainSteps.checkEntryByData(header, text);
     }
 }

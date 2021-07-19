@@ -32,15 +32,15 @@ public class LoginPage {
     }
 
     public LoginPage proceedLogin(String email, String password) {
-        log.info("Fill email field:" + email);
+        log.info("Fill email field: " + email);
         $(EMAIL_INPUT).sendKeys(email);
-        log.info("Fill password field:" + password);
+        log.info("Fill password field: " + password);
         $(PASSWORD_INPUT).sendKeys(password);
         $(LOGIN_BUTTON).click();
         return this;
     }
 
-    public void checkThatNewUserIsAuthorized(){
+    public void checkThatNewUserIsAuthorized() {
         try {
             log.info("Waiting until modal page is opened");
             $(NEW_PAGE_HEADER).waitUntil(Condition.visible, 1000);

@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.sleep;
 import static org.openqa.selenium.By.id;
 
 @Log4j2
@@ -20,7 +19,6 @@ public class EntryPage {
 
     public void openPage() {
         log.info("Opening Entry page");
-        sleep(1000);
         isPageOpened();
     }
 
@@ -29,10 +27,10 @@ public class EntryPage {
         $(HOME_BUTTON).waitUntil(Condition.visible, 10000);
     }
 
-    public void backToMainPage(){
+    public void backToMainPage() {
         log.info("Back to Main/Home page");
         $(HOME_BUTTON).click();
-        sleep(1000);
+
     }
 
     public EntryPage fillEntry(String header, String text) {
@@ -43,14 +41,11 @@ public class EntryPage {
         $(BOLD_BUTTON).click();
         log.info("Fill header field:" + header);
         $(EDIT_ENTRY_AREA).sendKeys(header);
-        sleep(1000);
         $(EDIT_ENTRY_AREA).sendKeys(Keys.RETURN);
         $(BOLD_BUTTON).click();
         log.info("Fill text field:" + text);
         $(EDIT_ENTRY_AREA).sendKeys(text);
-        sleep(1000);
         $(CLOSE_BUTTON).click();
-        sleep(1000);
         return this;
     }
 }

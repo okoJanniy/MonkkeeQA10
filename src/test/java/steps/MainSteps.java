@@ -3,22 +3,22 @@ package steps;
 import io.qameta.allure.Step;
 import pages.MainPage;
 
-public class MainStep {
+public class MainSteps {
 
     MainPage mainPage;
 
-    public MainStep(){
+    public MainSteps() {
         mainPage = new MainPage();
     }
 
     @Step("Перейти на страницу создания новой записи")
-    public MainStep clickCreateNewEntry(){
+    public MainSteps clickCreateNewEntry() {
         mainPage.clickNewEntry();
         return this;
     }
 
     @Step("Подтвердить созданную entry по введенным данным: header = '{header}'и text = '{text}'")
-    public MainStep checkEntryByData(String header, String text){
+    public MainSteps checkEntryByData(String header, String text){
         mainPage.isPageOpened();
         mainPage.checkEntryByHeader(header);
         mainPage.checkEntryByBodyText(text);

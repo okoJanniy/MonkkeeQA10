@@ -26,7 +26,6 @@ public class MailinatorPage {
     public void openPage() {
         log.info("Opening Mailinator page");
         open(URL);
-        sleep(1000);
         isPageOpened();
     }
 
@@ -36,7 +35,7 @@ public class MailinatorPage {
     }
 
     public MailinatorPage lookingForOurEmail(String email) {
-        log.info("Fill email field:" + email);
+        log.info("Fill email field: " + email);
         $(ENTER_MAILINATOR_INBOX).sendKeys(email);
         log.info("Press Go button");
         $(GO_BUTTON).click();
@@ -55,7 +54,6 @@ public class MailinatorPage {
 
     public MailinatorPage checkRegistrationConfirmResult() {
         switchTo().window(1);
-        sleep(2000);
         try {
             log.info("Checking registration message");
             $(CONFIRMATION_MESSAGE).shouldBe(Condition.text("Registration confirmed successfully"));

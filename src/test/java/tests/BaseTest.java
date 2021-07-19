@@ -9,17 +9,17 @@ import utils.Generator;
 
 public class BaseTest {
 
-   RegistrationStep registrationStep;
-   Generator generator;
-   MailinatorStep mailinatorStep;
-   LoginStep loginStep;
-   EntryStep entryStep;
-   MainStep mainStep;
-   String email;
-   String password;
-   String header;
-   String text;
-   String tag;
+    RegistrationSteps registrationSteps;
+    Generator generator;
+    MailinatorSteps mailinatorSteps;
+    LoginSteps loginSteps;
+    EntrySteps entrySteps;
+    MainSteps mainSteps;
+    String email;
+    String password;
+    String header;
+    String text;
+    String tag;
 
     @BeforeClass
     public void openBrowser() {
@@ -34,16 +34,15 @@ public class BaseTest {
         header = generator.generateRandomHeader();
         text = generator.generateRandomText();
         tag = generator.generateRandomTag();
-        registrationStep = new RegistrationStep();
-        mailinatorStep = new MailinatorStep();
-        loginStep = new LoginStep();
-        entryStep = new EntryStep();
-        mainStep = new MainStep();
+        registrationSteps = new RegistrationSteps();
+        mailinatorSteps = new MailinatorSteps();
+        loginSteps = new LoginSteps();
+        entrySteps = new EntrySteps();
+        mainSteps = new MainSteps();
     }
 
-    @AfterMethod
-    public void closeBrowser()
-    {
+    @AfterMethod(alwaysRun = true)
+    public void closeBrowser() {
         Selenide.closeWebDriver();
     }
 }

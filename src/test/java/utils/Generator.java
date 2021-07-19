@@ -13,7 +13,7 @@ public class Generator {
         FakeValuesService fakeValuesService = new FakeValuesService(
                 new Locale("en-GB"), new RandomService());
         log.info("Generating email");
-      return fakeValuesService.bothify("????????##@mailinator.com");
+        return fakeValuesService.bothify("????????##@mailinator.com");
     }
 
     public String generateRandomPassword() {

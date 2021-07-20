@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="2" name="Test suite" parallel="tests">
+    <test name="Entry tests">
+        <classes>
+            <class name="tests.RegistrationTest"/>
+            <class name="tests.MailinatorTest"/>
+            <class name="tests.CreateNewEntryTest"/>
+            <class name="tests.SearchEntryByTextTest"/>
+            <class name="tests.DeleteEntryInsideTest"/>
+            <class name="tests.DeleteOneEntryTest"/>
+        </classes>
+    </test> <!-- Test -->
+    <test name="Tags tests">
+        <classes>
+            <class name="tests.DeleteTagInsideEntryTest"/>
+            <class name="tests.SearchEntryByTagTest"/>
+            <class name="tests.EditTagTest"/>
+            <class name="tests.DeleteTagInManageTagsTest"/>
+            <class name="tests.DeleteAllEntriesTest"/>
+        </classes>
+    </test> <!-- Test -->
+</suite>

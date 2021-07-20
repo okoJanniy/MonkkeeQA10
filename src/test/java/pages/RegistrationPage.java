@@ -1,54 +1,54 @@
 package pages;
 
 import com.codeborne.selenide.Condition;
-import lombok.extern.log4j.Log4j2;
+import com.codeborne.selenide.ex.ElementShould;
 import org.openqa.selenium.By;
+import org.testng.Assert;
 
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.openqa.selenium.By.id;
 
-@Log4j2
-public class RegistrationPage {
+public class RegistrationPage extends BasePage {
 
     private static final String URL = "https://my.monkkee.com/account/registration";
     private static final String COMPLETE_REGISTRATION_BUTTON = ".btn";
-    private static final By REGISTRATION_EMAIL = id("registration_email");
-    private static final By REGISTRATION_PASSWORD = id("registration_password");
-    private static final By CONFIRM_PASSWORD = id("registration_password_confirmation");
-    private static final By TERMS_OF_USE_CHECKBOX = id("registration_terms_of_use");
-    private static final By LOST_PASSWORD_WARNING_CHECKBOX = id("registration_lost_password_warning_registered");
-    private static final String REGISTRATION_MESSAGE = "h1";
+    private static final By REGISTRATION_EMAIL_ID = id("registration_email");
+    private static final By REGISTRATION_PASSWORD_ID = id("registration_password");
+    private static final By CONFIRM_PASSWORD_ID = id("registration_password_confirmation");
+    private static final By TERMS_OF_USE_CHECKBOX_ID = id("registration_terms_of_use");
+    private static final By LOST_PASSWORD_WARNING_CHECKBOX_ID = id("registration_lost_password_warning_registered");
+    private static final String REGISTRATION_RESULT_MESSAGE = "h1";
 
-    public void openPage() {
-        log.info("Opening Registration page");
+    @Override
+    public RegistrationPage openPage() {
         open(URL);
         isPageOpened();
-    }
-
-    public void isPageOpened() {
-        log.info("Registration page is opened");
-        $(COMPLETE_REGISTRATION_BUTTON).waitUntil(Condition.visible, 10000);
-    }
-
-    public RegistrationPage proceedRegistration(String email, String password) {
-        log.info("Fill email field: " + email);
-        $(REGISTRATION_EMAIL).sendKeys(email);
-        log.info("Fill password field: " + password);
-        $(REGISTRATION_PASSWORD).sendKeys(password);
-        log.info("Fill confirmation password field: " + password);
-        $(CONFIRM_PASSWORD).sendKeys(password);
-        log.info("Click terms of use checkbox");
-        $(TERMS_OF_USE_CHECKBOX).click();
-        log.info("Click lost password warning checkbox");
-        $(LOST_PASSWORD_WARNING_CHECKBOX).click();
-        $(COMPLETE_REGISTRATION_BUTTON).click();
         return this;
     }
 
-    public RegistrationPage confirmRegistration() {
-        log.info("Confirm registration message");
-        $(REGISTRATION_MESSAGE).shouldBe(Condition.text("User registered"));
+    @Override
+    public RegistrationPage isPageOpened() {
+        try {
+            $(COMPLETE_REGISTRATION_BUTTON, "Ждем, пока страница загрузится").shouldBe(Condition.visible);
+            return this;
+        } catch (ElementShould e) {
+            Assert.fail("Страница почему-то не загрузилась");
+            return null;
+        }
+    }
+
+    public RegistrationPage fillInRegistrationData(String email, String password) {
+        $(REGISTRATION_EMAIL_ID, "Вводим Email нового пользователя " + email).setValue(email);
+        $(REGISTRATION_PASSWORD_ID, "Вводим пароль нового пользователя " + password).setValue(password);
+        $(CONFIRM_PASSWORD_ID, "Вводим пароль в поле подтверждения " + password).setValue(password);
+        $(TERMS_OF_USE_CHECKBOX_ID, "Активируем чекбокс c Условиями использования").click();
+        $(LOST_PASSWORD_WARNING_CHECKBOX_ID, "Активируем чекбокс с условиями по паролю").click();
+        $(COMPLETE_REGISTRATION_BUTTON, "Кликаем на кнопку ОК и завершаем регистрацию").click();
+        return this;
+    }
+
+    public RegistrationPage checkRegistrationResult() {
+        $(REGISTRATION_RESULT_MESSAGE, "Проверяем сообщение о завершении регистрации").shouldBe(Condition.text("User registered"));
         return this;
     }
 }

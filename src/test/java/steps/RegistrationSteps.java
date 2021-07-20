@@ -4,27 +4,28 @@ import io.qameta.allure.Step;
 import pages.RegistrationPage;
 
 public class RegistrationSteps {
-    RegistrationPage registrationPage;
+
+    RegistrationPage page;
 
     public RegistrationSteps() {
-        registrationPage = new RegistrationPage();
+        page = new RegistrationPage();
     }
 
-    @Step("Открыть monkkee.com страницу регистрации")
+    @Step("Open monkkee.com registration page")
     public RegistrationSteps openRegistrationPage() {
-        registrationPage.openPage();
+        page.openPage();
         return this;
     }
 
-    @Step("Заполнить форму регистрации")
-    public RegistrationSteps fillFormForRegistrationANewUser(String email, String password) {
-        registrationPage.proceedRegistration(email, password);
+    @Step("Заполните регистрационные данные в полях электронной почты = '{email}', password = '{password}'")
+    public RegistrationSteps fillInRegistrationData(String email, String password) {
+        page.fillInRegistrationData(email, password);
         return this;
     }
 
-    @Step("Подтвердить регистрацию, получив сообщение о регистрации")
-    public RegistrationSteps confirmMessageOfRegistration() {
-        registrationPage.confirmRegistration();
+    @Step("Проверить результат регистрации")
+    public RegistrationSteps checkRegResult() {
+        page.checkRegistrationResult();
         return this;
     }
 }

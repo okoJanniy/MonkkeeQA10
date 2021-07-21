@@ -1,51 +1,52 @@
 package pages;
 
 import com.codeborne.selenide.Condition;
-import lombok.extern.log4j.Log4j2;
+import com.codeborne.selenide.ex.ElementShould;
 import org.openqa.selenium.By;
+import org.testng.Assert;
 
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.openqa.selenium.By.id;
 
-@Log4j2
-public class LoginPage {
+public class LoginPage extends BasePage {
 
     private static final String URL = "https://my.monkkee.com/#/";
-    private static final String LOGIN_BUTTON = ".btn";
-    private static final By EMAIL_INPUT = id("login");
-    private static final By PASSWORD_INPUT = id("password");
-    private static final String NEW_PAGE_HEADER = ".modal-header";
-    private static final String CANCEL_BUTTON = "Cancel";
+    private static final By EMAIL_INPUT_ID = id("login");
+    private static final By PASSWORD_INPUT_ID = id("password");
+    private static final String LOGIN_BUTTON_CSS = ".btn";
+    private static final String MODAL_FEED_HEADER_CSS = ".modal-header";
+    private static final String MODAL_CANCEL_BUTTON_TEXT = "Cancel";
 
+    @Override
     public LoginPage openPage() {
-        log.info("Opening Login page");
         open(URL);
         isPageOpened();
         return this;
     }
 
-    public void isPageOpened() {
-        log.info("Page is opened");
-        $(LOGIN_BUTTON).waitUntil(Condition.visible, 10000);
+    @Override
+    public LoginPage isPageOpened() {
+        try {
+            $(LOGIN_BUTTON_CSS, "Ждем, пока страница загрузится").shouldBe(Condition.visible);
+            return this;
+        } catch (ElementShould e) {
+            Assert.fail("Страница почему-то не загрузилась");
+            return null;
+        }
     }
 
-    public LoginPage proceedLogin(String email, String password) {
-        log.info("Fill email field: " + email);
-        $(EMAIL_INPUT).sendKeys(email);
-        log.info("Fill password field: " + password);
-        $(PASSWORD_INPUT).sendKeys(password);
-        $(LOGIN_BUTTON).click();
+    public LoginPage logIn(String email, String password) {
+        $(EMAIL_INPUT_ID, "Вводим Email " + email + " В поле User").setValue(email);
+        $(PASSWORD_INPUT_ID, "Вводим Пароль " + password + " В поле Password").setValue(password);
+        $(LOGIN_BUTTON_CSS, "Нажимаем на кнопку Login").click();
         return this;
     }
 
-    public void checkThatNewUserIsAuthorized() {
+    public void checkModal() {
         try {
-            log.info("Waiting until modal page is opened");
-            $(NEW_PAGE_HEADER).waitUntil(Condition.visible, 1000);
-            log.info("Closing modal and login");
-            $(byText(CANCEL_BUTTON)).waitUntil(Condition.visible, 7000).click();
+            $(MODAL_FEED_HEADER_CSS, "Ждем модалку если появится").waitUntil(Condition.visible, 1000);
+            $(byText(MODAL_CANCEL_BUTTON_TEXT), "Закрываем модалку, раз появилась").waitUntil(Condition.visible, 7000).click();
         } catch (AssertionError e) {
         }
     }

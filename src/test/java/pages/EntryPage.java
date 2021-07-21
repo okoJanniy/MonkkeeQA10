@@ -1,51 +1,96 @@
 package pages;
 
 import com.codeborne.selenide.Condition;
-import lombok.extern.log4j.Log4j2;
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.ex.ElementShould;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.testng.Assert;
 
-import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.switchTo;
 import static org.openqa.selenium.By.id;
 
-@Log4j2
-public class EntryPage {
+public class EntryPage extends BasePage {
 
-    private static final By HOME_BUTTON = id("back-to-overview");
-    private static final By EDIT_ENTRY_AREA = id("editable");
-    private static final By PANEL = id("cke_editable");
-    private static final String BOLD_BUTTON = (".cke_button__bold_icon");
-    private static final String CLOSE_BUTTON = (".cke_button__close_icon");
+    private static final String CHANGE_DATE_OR_TIME_CSS = "[title='Change entry date/time']";
+    private static final By EDIT_ENTRY_AREA_ID = id("editable");
+    private static final By CKE_PANEL_ID = id("cke_editable");
+    private static final String CKE_BOLD_BUTTON_CSS = (".cke_button__bold_icon");
+    private static final String CKE_CLOSE_BUTTON_CSS = (".cke_button__close_icon");
+    private static final By HOME_BUTTON_ID = id("back-to-overview");
+    private static final By DELETE_ENTRY_BUTTON_ID = id("delete-entry");
+    private static final By CREATE_NEW_TAG_INPUT_ID = id("new-tag");
+    private static final By CREATE_NEW_TAG_BUTTON_ID = id("assign-new-tag");
+    private static final By CHOOSE_TAG_SELECT_ID = id("select-tag");
+    private static final By CHOOSE_TAG_BUTTON_ID = id("assign-existing-tag");
+    private static final String ASSIGNED_TAGS_BLOCK_CSS = ".assigned-tags";
+    private static final String ASSIGNED_TAGS_CSS = "[ng-repeat='assignedTag in assignedTags']";
 
-    public void openPage() {
-        log.info("Opening Entry page");
+    @Override
+    public EntryPage openPage() {
         isPageOpened();
+        return this;
     }
 
-    public void isPageOpened() {
-        log.info("Entry page is opened");
-        $(HOME_BUTTON).waitUntil(Condition.visible, 10000);
+    @Override
+    public EntryPage isPageOpened() {
+        try {
+            $(CHANGE_DATE_OR_TIME_CSS, "Ждем, пока страница загрузится").shouldBe(Condition.visible);
+            return this;
+        } catch (ElementShould e) {
+            Assert.fail("Страница по какой-то причине не загрузилась");
+            return null;
+        }
     }
 
-    public void backToMainPage() {
-        log.info("Back to Main/Home page");
-        $(HOME_BUTTON).click();
-
+    public EntryPage changeEntryText(String headerText, String bodyText) {
+        $(EDIT_ENTRY_AREA_ID, "Кликаем по области редактирования записи").click();
+        $(CKE_PANEL_ID, "Ждем покая появится панель ckeditor").shouldBe(Condition.visible);
+        $(CKE_BOLD_BUTTON_CSS, "Активируем кнопку bold на панели cke").click();
+        $(EDIT_ENTRY_AREA_ID, "Вводим заголовок записи - " + headerText).sendKeys(headerText);
+        $(CKE_BOLD_BUTTON_CSS, "Деактивируем кнопку bold на панели cke").click();
+        $(EDIT_ENTRY_AREA_ID, "Переводим текстовый курсор на новую строку").sendKeys(Keys.RETURN);
+        $(EDIT_ENTRY_AREA_ID, "Вводим текст в тело записи - " + bodyText).sendKeys(bodyText);
+        $(CKE_CLOSE_BUTTON_CSS, "Закрываем панель cke").click();
+        return this;
     }
 
-    public EntryPage fillEntry(String header, String text) {
-        log.info("Click edit entry area");
-        $(EDIT_ENTRY_AREA).click();
-        log.info("Waiting for visibility panel");
-        $(PANEL).shouldBe(Condition.visible);
-        $(BOLD_BUTTON).click();
-        log.info("Fill header field:" + header);
-        $(EDIT_ENTRY_AREA).sendKeys(header);
-        $(EDIT_ENTRY_AREA).sendKeys(Keys.RETURN);
-        $(BOLD_BUTTON).click();
-        log.info("Fill text field:" + text);
-        $(EDIT_ENTRY_AREA).sendKeys(text);
-        $(CLOSE_BUTTON).click();
+    public EntryPage addNewTagInEntry(String newTag) {
+        $(CREATE_NEW_TAG_INPUT_ID).shouldBe(Condition.visible);
+        $(CREATE_NEW_TAG_INPUT_ID, "Вводим имя нового тега в поле - " + newTag).sendKeys(newTag);
+        $(CREATE_NEW_TAG_BUTTON_ID, "Сохраняем новый тег").click();
+        Selenide.$$(ASSIGNED_TAGS_CSS).shouldHaveSize(1);
+        $(ASSIGNED_TAGS_BLOCK_CSS, "Проверяем есть ли созданный тег в блоке прикрепленных").find(byText(newTag)).shouldBe(Condition.visible);
+        return this;
+    }
+
+    public EntryPage addExistTagInEntry(String existTag) {
+        try {
+            $(CHOOSE_TAG_SELECT_ID, "Выбираем тег из списка существующих").shouldBe(Condition.visible).selectOption(existTag);
+            $(CHOOSE_TAG_BUTTON_ID, "Добавляем тег в запись").shouldBe(Condition.visible).click();
+            $(ASSIGNED_TAGS_BLOCK_CSS, "Проверяем есть ли добавленный тег в блоке прикрепленных").find(byText(existTag)).shouldBe(Condition.visible);
+            return this;
+        } catch (ElementShould e) {
+            Assert.fail("Элемент не появился");
+            return null;
+        }
+    }
+
+    public EntryPage deleteEntry() {
+        $(DELETE_ENTRY_BUTTON_ID, "Жмем на кнопку удаления записи").click();
+        switchTo().alert().accept();
+        return this;
+    }
+
+    public EntryPage goMain() {
+        $(HOME_BUTTON_ID, "Жмем на кнопку перехода на главную страницу").click();
+        return this;
+    }
+
+    public EntryPage deleteTag(String tag) {
+        $(ASSIGNED_TAGS_BLOCK_CSS, "Ищем тег добавленный в запись и удаляем его").find(byText(tag)).click();
+        $(ASSIGNED_TAGS_BLOCK_CSS, "Проверяем, что тег удален").find(byText(tag)).shouldNotBe(Condition.visible);
         return this;
     }
 }

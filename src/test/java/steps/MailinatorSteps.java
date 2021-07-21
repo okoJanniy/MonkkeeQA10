@@ -5,31 +5,30 @@ import pages.MailinatorPage;
 
 public class MailinatorSteps {
 
-    MailinatorPage mailinatorPage;
+    MailinatorPage page;
 
     public MailinatorSteps() {
-        mailinatorPage = new MailinatorPage();
+        page = new MailinatorPage();
     }
 
-    @Step("Открыть страницу Mailinator")
+    @Step("Открыть страницу редактирования профиля")
     public MailinatorSteps openMailinatorPage() {
-        mailinatorPage.openPage();
+        page.openPage();
         return this;
     }
 
-    @Step("Перейти на нужный нам email")
+    @Step("Перейти к emailBox '{email}'")
     public MailinatorSteps goToEmailBox(String email) {
-        mailinatorPage.lookingForOurEmail(email);
+        page.goToEmailBox(email);
         return this;
     }
 
-    @Step("Подтвердить регистрацию и проверить результат")
+    @Step("Подтвердить регистрацию")
     public MailinatorSteps confirmRegistration() {
-        mailinatorPage
-                .confirmEmail()
+        page
+                .goToMailAndConfirm()
                 .checkRegistrationConfirmResult();
         return this;
     }
 }
-
 

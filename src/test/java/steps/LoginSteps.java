@@ -5,27 +5,18 @@ import pages.LoginPage;
 
 public class LoginSteps {
 
-    LoginPage loginPage;
+    LoginPage page;
 
     public LoginSteps() {
-        loginPage = new LoginPage();
+        page = new LoginPage();
     }
 
-    @Step("Открыть monkkee.com страницу авторизации")
-    public LoginSteps openLoginPage() {
-        loginPage.openPage();
-        return this;
-    }
-
-    @Step("Заполнить форму: Email='{email}', Password='{password}'")
-    public LoginSteps fillFormForLogin(String email, String password) {
-        loginPage.proceedLogin(email, password);
-        return this;
-    }
-
-    @Step("Подтвердить авторизацию")
-    public LoginSteps confirmAuthorization() {
-        loginPage.checkThatNewUserIsAuthorized();
+    @Step("Login monkkee.com Email='{email}', Password='{password}'")
+    public LoginSteps logIn(String email, String password) {
+        page
+                .openPage()
+                .logIn(email, password)
+                .checkModal();
         return this;
     }
 }

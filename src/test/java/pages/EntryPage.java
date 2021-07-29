@@ -60,7 +60,7 @@ public class EntryPage extends BasePage {
         $(CREATE_NEW_TAG_INPUT_ID).shouldBe(Condition.visible);
         $(CREATE_NEW_TAG_INPUT_ID, "Вводим имя нового тега в поле - " + newTag).sendKeys(newTag);
         $(CREATE_NEW_TAG_BUTTON_ID, "Сохраняем новый тег").click();
-        Selenide.$$(ASSIGNED_TAGS_CSS).shouldHaveSize(1);
+        //Selenide.$$(ASSIGNED_TAGS_CSS).shouldHaveSize(1);
         $(ASSIGNED_TAGS_BLOCK_CSS, "Проверяем есть ли созданный тег в блоке прикрепленных").find(byText(newTag)).shouldBe(Condition.visible);
         return this;
     }

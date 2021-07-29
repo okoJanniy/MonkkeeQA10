@@ -1,3 +1,4 @@
+/*
 package tests;
 
 import org.testng.annotations.Test;
@@ -26,3 +27,4 @@ public class DeleteEntryInsideTest extends BaseTest {
         headersteps.logOut();
     }
 }
+*/

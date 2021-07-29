@@ -8,12 +8,10 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
         <allure.version>2.13.8</allure.version>
         <aspectj.version>1.9.6</aspectj.version>
-        <maven.surefire.plugin.version>3.0.0-M1</maven.surefire.plugin.version>
-        <testng.version>7.3.0</testng.version>
+        <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
+        <testng.version>7.1.0</testng.version>
         <webdrivermanager.version>4.3.0</webdrivermanager.version>
         <selenide.version>5.22.3</selenide.version>
         <lombok.version>1.18.16</lombok.version>
@@ -26,6 +24,14 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.plugin.version}</version>
                 <configuration>
@@ -33,8 +39,9 @@
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                        <suiteXmlFile>src\test\resources\runTests.xml</suiteXmlFile>
                     </suiteXmlFiles>
+
                 </configuration>
                 <dependencies>
                     <dependency>

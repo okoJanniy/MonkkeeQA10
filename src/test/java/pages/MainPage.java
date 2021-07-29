@@ -69,7 +69,7 @@ public class MainPage extends BasePage {
         if ($$(ENTRY_LOCATOR_CSS, "Проверяем, что количество записей на странице больше 0").size() > 0) {
             List<SelenideElement> entries = $$(ENTRY_LOCATOR_CSS, "Добавляем все записи в лист");
             log.info("Переходим в выбранную запись - " + elementNumber);
-            entries.get(elementNumber - 1).click();
+            entries.get(elementNumber  - 1).click();
         } else {
             Assert.fail("Невозможно перейти в запись, т.к. её нет");
         }

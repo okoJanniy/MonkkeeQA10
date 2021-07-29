@@ -13,7 +13,7 @@ public class SearchEntryByTextTest extends BaseTest {
     String bodyText = entryData.generateRandomBody();
     String newTag = entryData.generateRandomTag();
 
-    @Test(description = "Поиск записей по тегу")
+    @Test(description = "Поиск записей по тексту")
     public void searchEntryByText() throws IOException {
         properties.loadFromXML(Files.newInputStream(path));
         loginsteps.logIn(properties.getProperty("userEmail"), properties.getProperty("userPassword"));

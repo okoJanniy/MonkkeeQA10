@@ -15,7 +15,7 @@ public class SearchEntryByTagTest extends BaseTest {
     String bodyText = entryData.generateRandomBody();
     String newTag = entryData.generateRandomTag();
 
-    @Ignore("Тест нашел баг")
+    @Ignore("Тест нашел баг: При создании тега, не всегда ему присваивается значение в скобках, что дает невозможным включить его в счетчик")
     @Test(description = "Поиск записей по тегу")
     public void searchEntriesByTag() throws IOException {
         properties.loadFromXML(Files.newInputStream(path));
